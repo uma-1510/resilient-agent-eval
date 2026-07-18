@@ -18,5 +18,9 @@
   {
     "id": "balanced_parentheses",
     "statement": "Write a function is_balanced(s) that returns True if every '(', '[', '{' in s is properly closed and nested by the matching ')', ']', '}' in the correct order, False otherwise. Assert it against an empty string, properly nested mixed brackets, unmatched closing bracket, and unmatched opening bracket."
+  },
+  {
+    "id": "flatten_repeat_calls",
+    "statement": "Write a function flatten(nested) that returns a single flat list containing every integer from an arbitrarily nested list structure (lists inside lists to any depth), in left-to-right order. Then, in the same script, call flatten() three separate times on three different fresh nested lists of your choosing, one after another, and assert after each call that the result contains only the integers from that call's input and nothing carried over from a previous call."
   }
 ]

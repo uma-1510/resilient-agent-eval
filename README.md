@@ -1,8 +1,3 @@
-<!--
-  Results section is placeholder until Phase 9 (live Gemini key + Docker run).
-  Regenerate the table from results.json every time `python main.py --all` runs —
-  do not hand-write it.
--->
 # Kintsugi — A Self-Healing Code Generation Agent
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -17,14 +12,14 @@ retry budget. Evaluated as a benchmark harness across a set of problems, not a s
 
 ## Results
 
-*(Placeholder — will be regenerated from a real `results.json` run in Phase 9.)*
+*(From a real `python main.py` run against `tests/problem_set.json` — model: `gemini-flash-latest`, Docker sandbox, 2026-07-18.)*
 
 | Metric | Value |
 |---|---|
-| Problems evaluated | [N] |
-| Solved within retry budget | [X / N] ([XX]%) |
-| Avg. retries to success | [X.X] |
-| Avg. wall-clock time per problem | [X.Xs] |
+| Problems evaluated | 6 |
+| Solved within retry budget | 6 / 6 (100%) |
+| Avg. retries to success | 0.0 |
+| Avg. wall-clock time per problem | 4.6s |
 | Retry budget | 3 |
 
 <details>
@@ -32,9 +27,24 @@ retry budget. Evaluated as a benchmark harness across a set of problems, not a s
 
 | Problem | Result | Retries | Notes |
 |---|---|---|---|
-| [problem_id] | ✅ Solved | 0 | |
+| fizzbuzz_variant | ✅ Solved | 0 | |
+| binary_search | ✅ Solved | 0 | |
+| reverse_words | ✅ Solved | 0 | |
+| matrix_transpose | ✅ Solved | 0 | |
+| balanced_parentheses | ✅ Solved | 0 | |
+| flatten_repeat_calls | ✅ Solved | 0 | Designed to trip the classic Python mutable-default-argument bug across repeated calls — solved cleanly on the first attempt anyway. |
 
 </details>
+
+**Honest caveat:** every problem in this run was solved on the first attempt, including two
+(`balanced_parentheses`'s edge cases and `flatten_repeat_calls`, the latter specifically
+engineered to bait a known Python gotcha) chosen to be more likely to trip up a one-shot
+generation. `gemini-flash-latest` handled all of them cleanly, so this particular run doesn't
+exercise the repair loop — the repair path (retry routing, repair-prompt construction, and the
+full-history replay) is instead verified by the mocked test suite in
+`tests/test_orchestrator.py`, which explicitly drives a fail-then-repair-then-succeed scenario
+and a fail-until-budget-exhausted scenario. A harder or more adversarial problem set would be
+needed to observe a live repair in `results.json`.
 
 ## How it works
 
@@ -87,8 +97,8 @@ mutating state directly, which keeps each node independently testable.
 ## Setup
 
 ```bash
-git clone [your-repo-url]
-cd self-healing-code-agent
+git clone https://github.com/uma-1510/resilient-agent-eval.git
+cd resilient-agent-eval
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # add your Gemini API key
@@ -96,6 +106,24 @@ cp .env.example .env   # add your Gemini API key
 
 Requires Docker Desktop (or the Docker daemon) running locally — the sandbox connects via
 `docker.from_env()` and will raise a clear error at startup if it can't reach the daemon.
+
+**Gemini free-tier quota note:** some Google Cloud projects report `limit: 0` free-tier quota
+on specific model IDs (e.g. `gemini-2.0-flash`) even with a valid key, and older model IDs like
+`gemini-1.5-flash` may 404 as fully retired. If you hit a `429 RESOURCE_EXHAUSTED` with
+`limit: 0` or a `404` on the model in `.env`, list the models your key can actually reach and
+try one of the `-latest` aliases:
+
+```bash
+python -c "
+from google import genai
+from config.settings import get_settings
+for m in genai.Client(api_key=get_settings().gemini_api_key).models.list():
+    if 'generateContent' in (m.supported_actions or []):
+        print(m.name)
+"
+```
+
+This project's results below were generated with `MODEL_NAME=gemini-flash-latest`.
 
 ## Usage
 
