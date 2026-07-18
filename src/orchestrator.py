@@ -35,7 +35,10 @@ def route_after_execution(state: AgentState) -> Literal["generate_code", "__end_
     be unit-tested by constructing an AgentState directly."""
     if state.solved:
         return END
-    if state.retry_count >= state.max_retries:
+    # retry_count is the number of failed attempts so far. max_retries repair
+    # attempts means max_retries + 1 total attempts (1 initial + N repairs),
+    # so we keep looping until retry_count exceeds max_retries.
+    if state.retry_count > state.max_retries:
         return END
     return "generate_code"
 

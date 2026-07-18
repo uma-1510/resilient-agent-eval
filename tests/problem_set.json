@@ -1,0 +1,22 @@
+[
+  {
+    "id": "fizzbuzz_variant",
+    "statement": "Write a function fizzbuzz(n) returning a list of strings for 1..n inclusive: multiples of 3 -> 'Fizz', multiples of 5 -> 'Buzz', multiples of both -> 'FizzBuzz', otherwise the number as a string. Assert the result for n=15 matches the expected list exactly."
+  },
+  {
+    "id": "binary_search",
+    "statement": "Write a function binary_search(sorted_list, target) returning the index of target in sorted_list, or -1 if not present. Assert it against: an empty list, a list with one element, a target not present, and a target at the first/last index."
+  },
+  {
+    "id": "reverse_words",
+    "statement": "Write a function reverse_words(sentence) that reverses the order of words in a sentence, collapsing any run of whitespace between words into a single space and stripping leading/trailing whitespace. Assert it against a normal sentence, a sentence with multiple spaces between words, and a sentence with leading/trailing spaces."
+  },
+  {
+    "id": "matrix_transpose",
+    "statement": "Write a function transpose(matrix) that returns the transpose of a matrix represented as a list of lists. Assert it against a square matrix and a non-square (rectangular) matrix."
+  },
+  {
+    "id": "balanced_parentheses",
+    "statement": "Write a function is_balanced(s) that returns True if every '(', '[', '{' in s is properly closed and nested by the matching ')', ']', '}' in the correct order, False otherwise. Assert it against an empty string, properly nested mixed brackets, unmatched closing bracket, and unmatched opening bracket."
+  }
+]
