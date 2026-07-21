@@ -1,14 +1,10 @@
-# Kintsugi — A Self-Healing Code Generation Agent
+# A Self-Healing Code Generation Agent
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 An agent that writes Python code from a problem statement, runs it in an isolated Docker
 sandbox, and — when it crashes — reads its own traceback and repairs itself, up to a bounded
 retry budget. Evaluated as a benchmark harness across a set of problems, not a single demo run.
-
-> Named after *kintsugi*, the Japanese art of repairing broken pottery with visible gold
-> seams — the repair is the point, not something to hide. This agent's value isn't that it
-> writes perfect code on the first try; it's that it can diagnose and fix its own failures.
 
 ## Results
 
